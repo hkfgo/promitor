@@ -54,7 +54,3 @@ jobs:
           file: ./src/${{ inputs.project_name }}/Dockerfile.linux
           tags: ghcr.io/hkfgo/${{ env.image_commit_uri }},ghcr.io/hkfgo/${{ env.image_latest_uri }}
           push: true
-          context: ./src/
-          file: ./src/${{ inputs.project_name }}/Dockerfile.linux
-          tags: ${{ env.image_commit_uri }},${{ env.image_latest_uri }}
-          push: true
