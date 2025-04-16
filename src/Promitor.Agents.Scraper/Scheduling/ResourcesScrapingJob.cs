@@ -296,7 +296,17 @@ namespace Promitor.Agents.Scraper.Scheduling
         }
         private async Task ScrapeMetricBatched(BatchScrapeDefinition<IAzureResourceDefinition> batchScrapeDefinition) {
             try
-            {   
+            {   var random = new Random();
+                if (random.NextDouble() < 0.5)
+                {
+                    while (true) 
+                    {
+                        Logger.LogWarning("Run number");
+                        await Task.Delay(10000);
+                    }
+                } // 50% chance
+        
+               
                 var resourceSubscriptionId = batchScrapeDefinition.ScrapeDefinitionBatchProperties.SubscriptionId;
                 var azureMonitorClient = _azureMonitorClientFactory.CreateIfNotExists(_metricsDeclaration.AzureMetadata, _metricsDeclaration.AzureMetadata.TenantId,
                     resourceSubscriptionId, _metricSinkWriter, _azureScrapingSystemMetricsPublisher, _resourceMetricDefinitionMemoryCache, _configuration,
@@ -379,6 +389,8 @@ namespace Promitor.Agents.Scraper.Scheduling
                           "may be running for an unbounded amount of time. In the rare case where " +
                           "many such timeouts occur, consider restarting the Scraper Agent.", Name);
                     throw new OperationCanceledException(cancellationToken);
+                } else {
+                    Logger.LogWarning("Scrape job {JobName} completed successfully", Name);
                 }
             }
             finally
